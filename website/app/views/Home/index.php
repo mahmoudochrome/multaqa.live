@@ -11,9 +11,8 @@
             <?php require_once $_SERVER['DOCUMENT_ROOT'] . '/app/templets/landing.body.php'; ?>
         </article>
     </div>
-
+    <?php require_once $_SERVER['DOCUMENT_ROOT'] . '/app/templets/footer.php'; ?>
 
 </div>
-
 </body>
 </html>
