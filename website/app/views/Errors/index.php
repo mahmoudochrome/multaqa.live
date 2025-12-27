@@ -1,4 +1,8 @@
-<?php require_once $_SERVER['DOCUMENT_ROOT'] . '/app/templets/head.php'; ?>
+<?php
+$title = "Error";
+require_once $_SERVER['DOCUMENT_ROOT'] . '/app/templets/head.php';
+?>
+</head>
 <body>
 <div class="container">
     <?php require_once $_SERVER['DOCUMENT_ROOT'] . '/app/templets/header.php'; ?>

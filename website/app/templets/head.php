@@ -43,9 +43,8 @@
         }
 
         aside {
-            @apply bg-(--side-bg) p-5 m-2 flex-grow;
+            @apply bg-(--side-bg) p-5 m-2 flex-grow min-w-30;
             width: 30%;
-            min-width: fit-content;
         }
 
         article {
@@ -54,8 +53,7 @@
         }
 
         .box {
-            @apply p-2 flex flex-col bg-(--secound-bg) border-2 border-solid border-(--black-text)
-            justify-center text-center items-center
+            @apply p-2 flex flex-col bg-(--secound-bg) border-2 border-solid border-(--black-text) text-wrap
         }
 
         input {
@@ -75,6 +73,10 @@
             cursor-pointer text-(--white-text)
         }
 
+        .disabled-btn{
+            @apply focus:!outline-none disabled:!opacity-25 hover:!bg-(--button-links)
+        }
+
         p{
             @apply mt-3
         }
@@ -86,5 +88,4 @@
         }
 
     </style>
-    <title>Multaqa.live</title>
-</head>
+    <title><?= $title ?></title>
