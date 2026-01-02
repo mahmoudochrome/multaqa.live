@@ -1,25 +1,24 @@
 <div class="box">
-    <h2 class="text-2xl">Join us now!</h2>
+    <h2 id="SignupTitle" class="text-2xl"></h2>
     <form action="/login/request" method="post">
         <input type="text" name="username" placeholder="username" maxlength="50" required id="usr">
         <input type="password" id="pwd" name="password" placeholder="password" maxlength="50" required>
         <div class="checkbox" id="chkbx">
             <input type="checkbox" id="showpwd" name="showpwd">
-            <lable for="showpwd">
-                show password
+            <lable id="ShowPassWd" for="showpwd">
             </lable>
         </div>
         <div id="password-strength-status"></div>
         <ul class="pswd_info" id="passwordCriterion">
-            <li data-criterion="length" class="invalid">more than 8 and less than 50 <strong>Characters</strong></li>
-            <li data-criterion="capital" class="invalid">At least <strong>one capital letter</strong></li>
-            <li data-criterion="small" class="invalid">At least <strong>one small letter</strong></li>
-            <li data-criterion="number" class="invalid">At least <strong>one number</strong></li>
-            <li data-criterion="special" class="invalid">At least <strong>one Specail Characters </strong></li>
+            <li id="charLenForPwd" data-criterion="length" class="invalid"></li>
+            <li id="UpperLetterPwd" data-criterion="capital" class="invalid"></li>
+            <li id="LowerLetterPwd" data-criterion="small" class="invalid"></li>
+            <li id="NumPwd" data-criterion="number" class="invalid"></li>
+            <li id="SpCharPwd" data-criterion="special" class="invalid"></li>
         </ul>
-        <button id="sbmt" disabled type="submit" class="disabled-btn">Sign Up</button>
+        <button id="signup" disabled type="submit" class="disabled-btn"></button>
     </form>
-    <a href="/">I have already an account</a>
+    <a id="accountAlready" href="/"></a>
 </div>
 
 <script src="/scripts/pwd.show.js"></script>
@@ -31,11 +30,11 @@
         console.log(check);
         console.log(usr.length >= 3);
         if (check === 5 && usr.length >= 3) {
-            $("#sbmt").prop("class", '');
-            $("#sbmt").prop("disabled", false);
+            $("#signup").prop("class", '');
+            $("#signup").prop("disabled", false);
         } else {
-            $("#sbmt").prop("class", 'disabled-btn');
-            $("#sbmt").prop("disabled", true);
+            $("#signup").prop("class", 'disabled-btn');
+            $("#signup").prop("disabled", true);
         }
     });
 </script>

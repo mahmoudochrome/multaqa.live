@@ -1,0 +1,41 @@
+{
+    "HeaderTitle": "Multaqa.live",
+    "HeaderSubTitle": "forms is alive again!",
+    "Login": "Login",
+    "signup": "Register",
+    "logout": "logout",
+    "Privacy": "Privacy Policies",
+    "Rules": "Community Rules",
+    "FooterTitle": "Made with Love, on Egyptian Lands",
+    "FooterSubTitle": "All Rights Reversed 2026",
+    "usr": "username",
+    "pwd": "password",
+    "home": "home",
+    "LoginTitle": "Let's Have Fun!",
+    "ShowPassWd": "show password",
+    "NoAccount": "Create an account",
+    "accountAlready": "I have already an account",
+
+    "LandingTitle": "Welcome To Multaqa.live!",
+    "LandingSubtitle": "The Egyptian Arabian Form Made from zero and 100% with humans!",
+    "LandingP1": "We aim to have our community and make it as we want, we want a community without shitposts, NSFW, stupid algorithms, reposting, Ai everywhere, Ai generated content, bots and spammers, we want it simple, lightweight and have old-school vibes! you can talk about any topic and be free, and you can be anonymous!",
+    "LandingP2": "you can find many spaces that discuss all many topics, you can also start a new space by requesting us! we will review your request and make it for you, we aim to keep it free from repeatation.",
+    "LandingP3": "you can report for any content that breaks our <a id=\"Rules\" href=\"\/Rules/\"></a> or help us in moderation by joining us! the project is opensource for everyone and everywhere! you can contribute as a mod, dev or just donate  to our project to keep it alive",
+
+    "SignupTitle": "Join us now!",
+    "charLenForPwd": "more than 8 and less than 50 <strong>Characters</strong>",
+    "UpperLetterPwd": "At least <strong>one capital letter</strong>",
+    "LowerLetterPwd": "At least <strong>one small letter</strong>",
+    "NumPwd": "At least <strong>one number</strong>",
+    "SpCharPwd": "At least <strong>one Specail Characters </strong>",
+
+    "Tips" : "Tips",
+    "usernameTips": "Username must be between 3 and 50 characters, no special characters except _ ",
+    "passwordTips": "Password must be more than 8 and less than 15 characters and have Upper, smaller, number and special character.",
+    "passwordMaxTips": "Password maximum is 255 char",
+    "emailComeSoonTips": "We are working on emails for verifications and reset password as a future plan.",
+    "towFAcomeSoonTips": "2FA codes are coming soon.",
+
+
+    "err404": "404! File Not Found"
+}

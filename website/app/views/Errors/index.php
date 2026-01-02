@@ -9,7 +9,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/app/templets/head.php';
 
     <div class="pagebody">
         <article>
-            <h1>404! File Not Found</h1>
+            <h1 id="err404"></h1>
         </article>
     </div>
 </div>

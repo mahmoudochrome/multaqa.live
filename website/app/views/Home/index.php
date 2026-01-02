@@ -1,5 +1,5 @@
 <?php
-$title = "Multaqa.live";
+$title = "Multaqa.live Home Page";
 require_once $_SERVER['DOCUMENT_ROOT'] . '/app/templets/head.php';
 ?>
 </head>
