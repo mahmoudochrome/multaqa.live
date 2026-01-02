@@ -1,5 +1,5 @@
 # Multaqa Project GR
-special thanks for Zeyad Mostafa for helping me with docker!
+special thanks for Zeyad Mostafa for helping me with docker and Tailwind!
 
 test on: https://multaqa.live
 
@@ -13,7 +13,33 @@ test on: https://multaqa.live
 - MySQL
 - Docker
 
-# what I learnt?
+## what I learnt?
 - make a basic MVC project
 - using @apply in css
 - Tailwind
+- Localization
+
+## Notes for development
+- to run the project, you need docker compose, use:
+```bash
+docker compose --build -d up
+```
+
+- Tailwind CSS for development:
+```bash
+npm run dev 
+```
+or 
+```bash
+bun run dev
+```
+to install bun on linux: `curl -fsSL https://bun.com/install | bash` or use `npm` whatever
+
+- tailwind for production:
+```bash
+npm run build
+```
+or
+```bash
+bun run build
+```
