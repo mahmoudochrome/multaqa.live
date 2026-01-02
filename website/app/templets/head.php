@@ -8,7 +8,8 @@
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 
     <link rel="stylesheet" href="public/styles/style.css">
-    <!--    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>-->
+    <script src="/assets/jquery-3.7.1.min.js.js"></script>
+    <script src="/scripts/lang.js"></script>
     <style type="text/tailwindcss">
         @theme {
             --primary-bg: #FA8843;
@@ -45,7 +46,7 @@
         }
 
         aside {
-            @apply bg-(--side-bg) p-5 m-2 flex-grow min-w-30;
+            @apply bg-(--side-bg) p-5 flex-grow min-w-80;
             width: 30%;
         }
 
@@ -76,7 +77,7 @@
         }
 
         .disabled-btn{
-            @apply focus:!outline-none disabled:!opacity-25 hover:!bg-(--button-links)
+            @apply focus:!outline-none disabled:!opacity-25 hover:!bg-(--button-links) !cursor-not-allowed
         }
 
         p{
