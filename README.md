@@ -18,6 +18,7 @@ test on: https://multaqa.live
 - using @apply in css
 - Tailwind
 - Localization
+- composer
 
 ## Database
 you can read about it see documentation [here](DB.md)
