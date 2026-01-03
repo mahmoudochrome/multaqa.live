@@ -6,4 +6,7 @@ WORKDIR /sites/localhost/html/public
 
 RUN chown -R apache:apache /sites/localhost || true
 
+# composer commands
+RUN apk add composer
+
 EXPOSE 80 443 8025
