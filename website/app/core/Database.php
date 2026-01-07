@@ -35,7 +35,7 @@ class Database {
             'mysql:host=%s;port=%s;dbname=%s;charset=%s',
             self::$config['dbhost'],
             self::$config['port'],
-            self::$config['database'],
+            self::$config['dbname'],
             self::$config['charset']
         );
 
