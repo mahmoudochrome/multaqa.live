@@ -33,7 +33,7 @@ class QueryBuilder
      * @param $columns [ alias => column name ]
      * @param $as AS whatever!
      */
-    public function select($table, $columns, $tableAlias) :void
+    public function select($table, $columns, $tableAlias)
     {
         $selectedFields = [];
         foreach ($columns as $key => $value) {
@@ -41,6 +41,7 @@ class QueryBuilder
         }
 
         $this->selectLine =  " SELECT " . implode(", ", $selectedFields) . " FROM " . $table . " " . $tableAlias . " ";
+        return $this;
     }
 
     /*
@@ -49,7 +50,7 @@ class QueryBuilder
      * @param $columnOnFKTable for the left side
      * @param $type for Left, Right or inner!
      */
-    public function join($table, $columnOnPKTable, $columnOnFKTable, $type = "") :void
+    public function join($table, $columnOnPKTable, $columnOnFKTable, $type = "")
     {
         $type = match($type) {
             "l" => " LEFT",
@@ -58,13 +59,14 @@ class QueryBuilder
             default => "",
         };
         $this->JoinLine =  $type . " JOIN " . $table . " ON " . $columnOnFKTable . " = " . $columnOnPKTable;
+        return $this;
     }
 
     /*
      * @param $columns is the right side
      * [ column1, $type => column2, column3 ]
      */
-    public function where($columns) :void
+    public function where($columns)
     {
         $columnEqlPlaceholder = [];
         foreach ($columns as $type => $column) {
@@ -75,13 +77,14 @@ class QueryBuilder
             }
         }
         $this->whereLine = " WHERE " . implode(' AND ', $columnEqlPlaceholder);
+        return $this;
     }
 
     /*
      * @param $column is the column at the end of order
      * @param $type, is the ASC or DESC
      */
-    public function order($column, $type = "a") :void
+    public function order($column, $type = "a")
     {
         $type = match($type) {
             "a" => "ASC",
@@ -90,6 +93,8 @@ class QueryBuilder
         };
 
         $this->orderLine =  " ORDER BY " . $column . " " . $type;
+
+        return $this;
     }
 
     /*
@@ -98,17 +103,19 @@ class QueryBuilder
      * result will be (column) VALUES (:column)
      * values will be inserted in another array for it, and will be handel in the execute method
      */
-    public function insert($table, $columns) :void
+    public function insert($table, $columns)
     {
         $fields = "`" . implode("`, `", $columns) . "`";
         $placeholders = ":" . implode(", :", $columns);
         $this->insertLine = " INSERT INTO " . $table . " (" . $fields . ") VALUES (" . $placeholders . ")";
+
+        return $this;
     }
 
     /*
      * same as insert table literally
      */
-    public function update($table, $columns) :void
+    public function update($table, $columns)
     {
         // SQL: SET col1 = :col1, col2 = :col2
         $columnEqlPlaceholder = [];
@@ -116,11 +123,14 @@ class QueryBuilder
             $columnEqlPlaceholder[] = "`$column` = :$column";
         }
         $this->updateLine = " UPDATE " . $table . " SET " . implode(', ', $columnEqlPlaceholder);
+
+        return $this;
     }
 
-    public function delete($table) :void
+    public function delete($table)
     {
         $this->deleteLine = " DELETE FROM " . $table . " ";
+        return $this;
     }
 
     protected function Build(): string
@@ -134,12 +144,12 @@ class QueryBuilder
             $sql = $this->insertLine . " ;";
         }
 
-        if ($this->updateLine) {
+        if ($this->updateLine && $this->whereLine) {
             $sql = $this->updateLine . $this->whereLine . " ;";
         }
 
-        if ($this->deleteLine) {
-            $sql = $this->deleteLine . " ;";
+        if ($this->deleteLine && $this->whereLine) {
+            $sql = $this->deleteLine . $this->whereLine . " ;";
         }
 
         return $sql;
