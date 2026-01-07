@@ -17,14 +17,16 @@ class QueryBuilder
     /*
      * this would be just a stupid function!
      */
-    public function selectAll($table){
+    public function selectAll($table)
+    {
         $this->selectLine = " SELECT * FROM {$table}; ";
     }
 
     /*
      * counting method
     */
-    public function count($table, $column = '*'){
+    public function count($table, $column = '*')
+    {
         $this->selectLine = " SELECT COUNT(*) AS count FROM {$table}; ";
     }
 
@@ -40,7 +42,7 @@ class QueryBuilder
             $selectedFields[] = is_int($key) ? $value : "$key AS $value";
         }
 
-        $this->selectLine =  " SELECT " . implode(", ", $selectedFields) . " FROM " . $table . " " . $tableAlias . " ";
+        $this->selectLine = " SELECT " . implode(", ", $selectedFields) . " FROM " . $table . " " . $tableAlias . " ";
         return $this;
     }
 
@@ -52,31 +54,62 @@ class QueryBuilder
      */
     public function join($table, $columnOnPKTable, $columnOnFKTable, $type = "")
     {
-        $type = match($type) {
-            "l" => " LEFT",
-            "r" => " RIGHT",
-            "i" => " INNER",
+        $type = match ($type) {
+            "left" => " LEFT",
+            "right" => " RIGHT",
+            "inner" => " INNER",
             default => "",
         };
-        $this->JoinLine =  $type . " JOIN " . $table . " ON " . $columnOnFKTable . " = " . $columnOnPKTable;
+        $this->JoinLine = $type . " JOIN " . $table . " ON " . $columnOnFKTable . " = " . $columnOnPKTable;
         return $this;
     }
 
     /*
+     * where protection, to kill the connector if the developer inserted it by mistake
+     */
+    protected function whereConnectorProtection($arr) :array
+    {
+        $index = count($arr) - 1;
+        if(isset($arr[$index][2])) $arr[$index][2] = "";
+        return $arr;
+    }
+
+    /*
+     * I need to reduce the repeation
+     */
+    protected function whereBuilder($arr) :string
+    {
+        $placeholders = " :" . $arr[0];
+        $arr[1] = strtoupper($arr[1]); // if operator is LIKE
+        $arr[2] = $arr[2] ? strtoupper($arr[2]) : "";
+        return " {$arr[0]} {$arr[1]} {$placeholders} {$arr[2]} ";
+    }
+
+    /*
      * @param $columns is the right side
-     * [ column1, $type => column2, column3 ]
+     * [ [column, "=", "or"], [column, "!=", "and"], [column, "like"], [[column, "=", "and"], [column, "LIKE"]], [column, "="] ]
      */
     public function where($columns)
     {
         $columnEqlPlaceholder = [];
-        foreach ($columns as $type => $column) {
-            if ($type === "l") {
-                $columnEqlPlaceholder[] = "`$column` LIKE :$column";
+        $lastIndex = count($columns) - 1;
+        if(is_array($columns[$lastIndex][0])) {
+            $columns = $this->whereConnectorProtection($columns);
+        }
+        for($i = 0; $i < count($columns); $i++) {
+            $arr = $columns[$i];
+            if (is_array($arr[0])) {
+                $arr = $this->whereConnectorProtection($arr);
+                $columnEqlPlaceholder[] .= " ( ";
+                foreach ($arr as $subArr) {
+                    $columnEqlPlaceholder[] .= $this->whereBuilder($subArr);
+                }
+                $columnEqlPlaceholder[] .= " ) ";
             } else {
-                $columnEqlPlaceholder[] = "`$column` = :$column";
+                $columnEqlPlaceholder[] .= $this->whereBuilder($arr); ;
             }
         }
-        $this->whereLine = " WHERE " . implode(' AND ', $columnEqlPlaceholder);
+        $this->whereLine = " WHERE " . implode(' ', $columnEqlPlaceholder);
         return $this;
     }
 
@@ -86,13 +119,13 @@ class QueryBuilder
      */
     public function order($column, $type = "a")
     {
-        $type = match($type) {
-            "a" => "ASC",
-            "d" => "DESC",
+        $type = match ($type) {
+            "asc" => "ASC",
+            "desc" => "DESC",
             default => ""
         };
 
-        $this->orderLine =  " ORDER BY " . $column . " " . $type;
+        $this->orderLine = " ORDER BY " . $column . " " . $type;
 
         return $this;
     }
@@ -136,8 +169,8 @@ class QueryBuilder
     protected function Build(): string
     {
         $sql = "";
-        if($this->selectLine){
-            $sql =  $this->selectLine . $this->JoinLine . $this->whereLine . $this->orderLine . " ;";
+        if ($this->selectLine) {
+            $sql = $this->selectLine . $this->JoinLine . $this->whereLine . $this->orderLine . " ;";
         }
 
         if ($this->insertLine) {
