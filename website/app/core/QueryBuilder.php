@@ -3,6 +3,7 @@
 namespace Core;
 
 use Core\Database;
+use Error;
 
 class QueryBuilder
 {
@@ -13,6 +14,7 @@ class QueryBuilder
     protected $insertLine = "";
     protected $updateLine = "";
     protected $deleteLine = "";
+    protected $querysArray = [];
 
     /*
      * this would be just a stupid function!
@@ -20,6 +22,7 @@ class QueryBuilder
     public function selectAll($table)
     {
         $this->selectLine = " SELECT * FROM {$table}; ";
+        return $this;
     }
 
     /*
@@ -27,7 +30,8 @@ class QueryBuilder
     */
     public function count($table, $column = '*')
     {
-        $this->selectLine = " SELECT COUNT(*) AS count FROM {$table}; ";
+        $this->selectLine = " SELECT COUNT({$column}) AS count FROM {$table}; ";
+        return $this;
     }
 
     /*
@@ -35,13 +39,13 @@ class QueryBuilder
      * @param $columns [ alias => column name ]
      * @param $as AS whatever!
      */
-    public function select($table, $columns, $tableAlias)
+    public function select($table, $columns, $tableAlias = "")
     {
         $selectedFields = [];
         foreach ($columns as $key => $value) {
             $selectedFields[] = is_int($key) ? $value : "$key AS $value";
         }
-
+        $tableAlias = ($tableAlias) ? " AS {$tableAlias}" : "";
         $this->selectLine = " SELECT " . implode(", ", $selectedFields) . " FROM " . $table . " " . $tableAlias . " ";
         return $this;
     }
@@ -120,8 +124,8 @@ class QueryBuilder
     public function order($column, $type = "a")
     {
         $type = match ($type) {
-            "asc" => "ASC",
-            "desc" => "DESC",
+            "a" => "ASC",
+            "d" => "DESC",
             default => ""
         };
 
@@ -166,37 +170,75 @@ class QueryBuilder
         return $this;
     }
 
-    protected function Build(): string
+    public function Build() :void
     {
-        $sql = "";
         if ($this->selectLine) {
-            $sql = $this->selectLine . $this->JoinLine . $this->whereLine . $this->orderLine . " ;";
+            $this->querysArray[] = $this->selectLine . $this->JoinLine . $this->whereLine . $this->orderLine . " ;";
         }
 
         if ($this->insertLine) {
-            $sql = $this->insertLine . " ;";
+            $this->querysArray[] =  $this->insertLine . " ;";
         }
 
         if ($this->updateLine && $this->whereLine) {
-            $sql = $this->updateLine . $this->whereLine . " ;";
+            $this->querysArray[] =  $this->updateLine . $this->whereLine . " ;";
         }
 
         if ($this->deleteLine && $this->whereLine) {
-            $sql = $this->deleteLine . $this->whereLine . " ;";
+            $this->querysArray[] =  $this->deleteLine . $this->whereLine . " ;";
         }
 
-        return $sql;
-    }
-
-    public function execute(array $params = [], $all = false)
-    {
-        $sql = $this->Build();
-        $result = $all ? Database::fetchAll($sql, $params) : Database::fetchOne($sql, $params);
-
-        // تصفير كل الـ properties عشان الاستعلام اللي جاي
         $this->selectLine = $this->JoinLine = $this->whereLine = $this->orderLine = "";
         $this->insertLine = $this->updateLine = $this->deleteLine = "";
+    }
 
+    public function execute(array $params = [], $all = false): array
+    {
+        $result = [];
+        foreach($this->querysArray as $sql) {
+            try {
+                $result[] = $all ? Database::fetchAll($sql, $params) : Database::fetchOne($sql, $params);
+            }catch( \PDOException $Exception ) {
+                // PHP Fatal Error. Second Argument Has To Be An Integer, But PDOException::getCode Returns A
+                // String.
+                throw new error( "error with the query: " . $sql . $Exception->getMessage( ) , $Exception->getCode( ));
+            }
+        }
         return $result;
     }
 }
+
+
+
+/*
+ * How to use?
+ * 1. you need Database Class with it
+ * 2. you will build query using the chain potatos
+ * ex:
+ * select(..)->insert(...)->build()->selectAll(...)->build()->execute();
+ * you can use one select, insert, delete, update before every build, if you used two selects, it will be overridden
+ * select, selectAll, count, all of them are select
+ * build() to save your query.
+ *
+ * What params would you love?
+ * selectAll( tablename )
+ * count( tablename, column = *)
+ * select( TableName , [col1, col2, col3], alias = "")
+ *
+ * join( tablename , PKcolumn, FKcolumn, "left" "right" "inner" "")
+ * where([
+ *          [column, "=", "or"], [column, "!=", "and"], [column, "like"],
+ *          [
+ *              [column, "=", "and"],
+ *              [column, "LIKE"]
+ *          ] for grouping
+ *          , [column, "="] ]);
+ * order(column, $type = "a for ASC and d for DESC, a is default")
+ *
+ * insert(tablename, array of columns) the function will make columnname VALUES :columnname
+ *
+ * update(tablename, columns) must have where()
+ * delete(table name) must have where()
+ *
+ * update and delete without where() will never run
+ */
