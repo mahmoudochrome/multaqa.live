@@ -41,5 +41,31 @@
     "towFAcomeSoonTips": "2FA coming soon.",
 
 
-    "err404": "404! File Not Found"
+    "err404": "404! File Not Found",
+
+    "no_username": "Please enter your username.",
+    "no_password": "Password field cannot be empty.",
+    "no_csrf": "Security token missing.",
+    "no_captcha": "Please complete the captcha.",
+
+    "csrf_err": "Session expired or invalid token. Please refresh.",
+    "captcha_err": "Incorrect captcha code, please try again.",
+
+    "max_username_50": "Username is too long (Max 50 characters).",
+    "max_password_50": "Password is too long (Max 50 characters).",
+
+    "min_username_3": "Username must be at least 3 characters.",
+    "min_password_8": "Password must be at least 8 characters.",
+
+    "user_taken": "This username is already registered.",
+    "user_not_found": "No account found with this username.",
+    "wrong_password": "The password you entered is incorrect.",
+
+    "email": "Please enter a valid email address.",
+
+    "since": "since: ",
+    "days": " days",
+    "months": " months",
+    "years": " years",
+    "recently": "recently"
 }

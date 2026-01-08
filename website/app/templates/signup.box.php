@@ -1,6 +1,6 @@
 <div class="box">
     <h2 id="SignupTitle" class="text-2xl"></h2>
-    <form action="/signup/addUser" method="post">
+    <form action="/signup/CreateAccount" method="post">
         <input type="hidden" name="csrf" value="<?= $_SESSION['CSRF_TOKEN'] ?>">
         <input type="text" name="username" placeholder="username" maxlength="50" required id="usr">
         <input type="password" id="pwd" name="password" placeholder="password" maxlength="50" required>
@@ -28,7 +28,7 @@
                 <button type="button" id="reload-captcha"></button>
             </div>
         </div>
-
+        <?php require_once $_SERVER['DOCUMENT_ROOT'] . '/app/templates/errors.php'; ?>
         <button id="signup-btn" disabled type="submit" class="disabled-btn"></button>
     </form>
     <a id="accountAlready" href="/"></a>
@@ -59,5 +59,4 @@
         d = new Date();
         $("#captcha").attr("src", "/Captcha/img?"+d.getTime());
     })
-
 </script>
