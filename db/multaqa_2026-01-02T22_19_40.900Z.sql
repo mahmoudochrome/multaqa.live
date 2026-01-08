@@ -200,4 +200,9 @@ CREATE TABLE IF NOT EXISTS feed
     PRIMARY KEY (`user_id`, `space_id`),
     CONSTRAINT `fk_feed_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
     CONSTRAINT `fk_feed_post` FOREIGN KEY (`space_id`) REFERENCES `spaces` (`id`) ON DELETE CASCADE
-)
+);
+
+INSERT INTO `types` (`name`) VALUES ('post'), ('comment'), ('reaction'), ('report');
+INSERT INTO `reaction_types` (`name`) VALUES ('upvote'), ('downvote');
+INSERT INTO `categories` (`name`) VALUES ('general');
+INSERT INTO `spaces` (`name`, `category_id`, `description`) VALUES ('general', 1, 'Very General For TESTONG');
