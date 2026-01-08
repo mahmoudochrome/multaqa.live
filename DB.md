@@ -1,8 +1,5 @@
-# Database Documentation 📊
-
-This document provides a detailed overview of the Multaqa database schema.
-
-## 📋 Summary
+# multaqa documentation
+## Summary
 
 - [Introduction](#introduction)
 - [Database Type](#database-type)
@@ -20,6 +17,7 @@ This document provides a detailed overview of the Multaqa database schema.
 	- [uploads](#uploads)
 	- [saved](#saved)
 	- [reacts_on_posts](#reacts_on_posts)
+	- [feed](#feed)
 - [Relationships](#relationships)
 - [Database Diagram](#database-diagram)
 
@@ -201,6 +199,14 @@ This document provides a detailed overview of the Multaqa database schema.
 | Name | Unique | Fields |
 |------|--------|--------|
 | reacts_on_posts_index_0 | ✅ | user_id, type_id, ref_id, react_type_id |
+### feed
+
+| Name        | Type          | Settings                      | References                    | Note                           |
+|-------------|---------------|-------------------------------|-------------------------------|--------------------------------|
+| **user_id** | INTEGER | 🔑 PK, not null, unique, autoincrement | fk_feed_user_id_user | |
+| **space_id** | INTEGER | 🔑 PK, not null | fk_feed_space_id_spaces | | 
+
+
 ## Relationships
 
 - **types to uploads**: one_to_many
@@ -221,6 +227,8 @@ This document provides a detailed overview of the Multaqa database schema.
 - **reacts_on_posts to types**: one_to_one
 - **reacts_on_posts to reaction_types**: one_to_one
 - **uploads to user**: many_to_one
+- **feed to user**: one_to_one
+- **feed to spaces**: one_to_one
 
 ## Database Diagram
 
@@ -244,6 +252,8 @@ erDiagram
 	reacts_on_posts ||--|| types : references
 	reacts_on_posts ||--|| reaction_types : references
 	uploads }o--|| user : references
+	feed ||--|| user : references
+	feed ||--|| spaces : references
 
 	types {
 		INTEGER id
@@ -343,5 +353,10 @@ erDiagram
 		INTEGER react_type_id
 		INTEGER type_id
 		INTEGER ref_id
+	}
+
+	feed {
+		INTEGER user_id
+		INTEGER space_id
 	}
 ```
