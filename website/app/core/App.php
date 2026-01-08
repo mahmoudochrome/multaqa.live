@@ -12,10 +12,10 @@ class App
     public function __construct() {
         // Parse url into readable string
         $url = $this->parseUrl();
-        $controller_file = isset($url[0]) ? $_SERVER['DOCUMENT_ROOT'] . '/app/controllers/Home.php' : $_SERVER['DOCUMENT_ROOT'] . '/app/controllers/' . $url[0] . '.php';
+        $controller_file = !(isset($url[0])) ? $_SERVER['DOCUMENT_ROOT'] . '/app/controllers/Home.php' : $_SERVER['DOCUMENT_ROOT'] . '/app/controllers/' . $url[0] . '.php';
 
         // Get controller
-        if (file_exists( $controller_file )) {
+        if (file_exists( $controller_file ) && (isset($url[0]))) {
             $this->controller = 'controllers\\' . ucfirst($url[0]);
             unset($url[0]);
         } else {
