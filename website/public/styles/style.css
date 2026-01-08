@@ -9,6 +9,7 @@
       "Courier New", monospace;
     --color-red-100: oklch(93.6% 0.032 17.717);
     --color-red-800: oklch(44.4% 0.177 26.899);
+    --color-green-800: oklch(44.8% 0.119 151.328);
     --spacing: 0.25rem;
     --breakpoint-lg: 64rem;
     --text-xs: 0.75rem;
@@ -224,6 +225,9 @@
   .contents {
     display: contents;
   }
+  .flex {
+    display: flex;
+  }
   .hidden {
     display: none;
   }
@@ -239,11 +243,20 @@
   .flex-auto {
     flex: auto;
   }
+  .flex-grow {
+    flex-grow: 1;
+  }
+  .border-collapse {
+    border-collapse: collapse;
+  }
   .resize {
     resize: both;
   }
   .list-disc {
     list-style-type: disc;
+  }
+  .flex-wrap {
+    flex-wrap: wrap;
   }
   .items-center {
     align-items: center;
@@ -278,8 +291,28 @@
     font-size: var(--text-sm);
     line-height: var(--tw-leading, var(--text-sm--line-height));
   }
+  .font-bold {
+    --tw-font-weight: var(--font-weight-bold);
+    font-weight: var(--font-weight-bold);
+  }
+  .text-wrap {
+    text-wrap: wrap;
+  }
   .text-\(--white-text\) {
     color: var(--white-text);
+  }
+  .text-green-800 {
+    color: var(--color-green-800);
+  }
+  .text-red-800 {
+    color: var(--color-red-800);
+  }
+  .underline {
+    text-decoration-line: underline;
+  }
+  .outline {
+    outline-style: var(--tw-outline-style);
+    outline-width: 1px;
   }
   .blur {
     --tw-blur: blur(8px);
@@ -367,7 +400,7 @@ article {
 .captcha input {
   width: 70%;
 }
-input {
+input , textarea {
   display: block;
   width: calc(var(--spacing) * 64);
   border-style: var(--tw-border-style);
@@ -485,12 +518,73 @@ p {
   --tw-font-weight: var(--font-weight-bold);
   font-weight: var(--font-weight-bold);
 }
-@media (max-width: 768px) {
-  header .header-links {
-    display: none;
-  }
+.space-title-header, .post-footer {
+  margin-bottom: calc(var(--spacing) * 3);
+  display: flex;
+  justify-content: space-between;
+}
+.space-title-header .right {
+  display: flex;
+  gap: calc(var(--spacing) * 5);
+}
+.space-title-header .right h1 {
+  font-size: var(--text-xl);
+  line-height: var(--tw-leading, var(--text-xl--line-height));
+}
+.space-title-header .right * {
+  margin: calc(var(--spacing) * 0);
+}
+.space-title-header .right img {
+  width: 80px;
+  height: 80px;
+}
+.post-box {
+  margin: calc(var(--spacing) * 1);
+  display: none;
+}
+.post-box form {
+  margin: calc(var(--spacing) * 0);
+  padding: calc(var(--spacing) * 0);
+}
+.post-box form * {
+  margin: calc(var(--spacing) * 0);
+  margin-bottom: calc(var(--spacing) * 2);
+}
+.post-box input, .post-box textarea {
+  width: 100%;
+}
+.post {
+  margin: calc(var(--spacing) * 2);
+}
+.post * {
+  margin: calc(var(--spacing) * 0);
+}
+.post-head {
+  margin-bottom: calc(var(--spacing) * 1);
+  display: flex;
+  align-items: center;
+  gap: calc(var(--spacing) * 2);
+}
+.post-head img {
+  width: 50px;
+  height: 50px;
+}
+.post h3 {
+  font-size: var(--text-xl);
+  line-height: var(--tw-leading, var(--text-xl--line-height));
+  --tw-font-weight: var(--font-weight-bold);
+  font-weight: var(--font-weight-bold);
 }
 @property --tw-border-style {
+  syntax: "*";
+  inherits: false;
+  initial-value: solid;
+}
+@property --tw-font-weight {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-outline-style {
   syntax: "*";
   inherits: false;
   initial-value: solid;
@@ -548,14 +642,12 @@ p {
   syntax: "*";
   inherits: false;
 }
-@property --tw-font-weight {
-  syntax: "*";
-  inherits: false;
-}
 @layer properties {
   @supports ((-webkit-hyphens: none) and (not (margin-trim: inline))) or ((-moz-orient: inline) and (not (color:rgb(from red r g b)))) {
     *, ::before, ::after, ::backdrop {
       --tw-border-style: solid;
+      --tw-font-weight: initial;
+      --tw-outline-style: solid;
       --tw-blur: initial;
       --tw-brightness: initial;
       --tw-contrast: initial;
@@ -569,7 +661,6 @@ p {
       --tw-drop-shadow-color: initial;
       --tw-drop-shadow-alpha: 100%;
       --tw-drop-shadow-size: initial;
-      --tw-font-weight: initial;
     }
   }
 }
