@@ -8,13 +8,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/app/templates/head.php';
     <?php require_once $_SERVER['DOCUMENT_ROOT'] . '/app/templates/header.php'; ?>
 
     <div class="pagebody">
-        <aside>
-            <?php
-            if (!isset($_SESSION['user_id']))
-                require_once $_SERVER['DOCUMENT_ROOT'] . '/app/templates/login.box.php';
-            else require_once $_SERVER['DOCUMENT_ROOT'] . '/app/templates/pfp.box.php';
-            ?>
-        </aside>
+        <?php require_once $_SERVER['DOCUMENT_ROOT'] . '/app/templates/general.aside.php'; ?>
         <article>
             <?php  if (!isset($_SESSION['user_id'])) {
                 require_once $_SERVER['DOCUMENT_ROOT'] . '/app/templates/landing.body.php';
