@@ -31,7 +31,7 @@ a {
 }
 
 .pagebody {
-    @apply flex flex-wrap-reverse
+    @apply flex flex-wrap
 }
 
 aside {
