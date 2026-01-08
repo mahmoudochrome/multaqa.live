@@ -10,5 +10,9 @@
         <?php } else { ?>
         <a id="logout" href="/Logout/"></a>
         <?php } ?>
+        <br>
+        Lang:
+        <a href="#" id="ar">AR</a> -
+        <a href="#" id="en">EN</a>
     </div>
 </header>
