@@ -191,3 +191,13 @@ CREATE TABLE IF NOT EXISTS `saved_items`
     CONSTRAINT `fk_saved_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
     CONSTRAINT `fk_saved_entity` FOREIGN KEY (`entity_type_id`) REFERENCES `types` (`id`) ON DELETE CASCADE
 );
+
+-- feed
+CREATE TABLE IF NOT EXISTS feed
+(
+    `user_id` INTEGER NOT NULL,
+    `space_id` INTEGER NOT NULL,
+    PRIMARY KEY (`user_id`, `space_id`),
+    CONSTRAINT `fk_feed_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
+    CONSTRAINT `fk_feed_post` FOREIGN KEY (`space_id`) REFERENCES `spaces` (`id`) ON DELETE CASCADE
+)

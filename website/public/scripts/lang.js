@@ -1,4 +1,8 @@
 $(document).ready(function () {
+    if (localStorage.getItem("lang") === null) {
+        localStorage.setItem("lang", "en");
+    }
+
     $("#ar").click(function () {
         localStorage.setItem("lang", "ar");
         console.log(localStorage.getItem("lang"));

@@ -1,5 +1,8 @@
-# multaqa documentation
-## Summary
+# Database Documentation 📊
+
+This document provides a detailed overview of the Multaqa database schema.
+
+## 📋 Summary
 
 - [Introduction](#introduction)
 - [Database Type](#database-type)

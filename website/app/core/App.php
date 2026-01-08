@@ -4,43 +4,51 @@ namespace core;
 
 class App
 {
-    protected $controller = 'controllers\\Home';
+    protected $controller = 'controllers\\ErrorPage';
     protected $method = 'index';
-    protected $params = [];
+    protected $params = ['404'];
+    protected $url;
 
-    protected $ControllerOrMethodExists = true;
-    public function __construct() {
-        // Parse url into readable string
-        $url = $this->parseUrl();
-        $controller_file = !(isset($url[0])) ? $_SERVER['DOCUMENT_ROOT'] . '/app/controllers/Home.php' : $_SERVER['DOCUMENT_ROOT'] . '/app/controllers/' . $url[0] . '.php';
-
-        // Get controller
-        if (file_exists( $controller_file ) && (isset($url[0]))) {
-            $this->controller = 'controllers\\' . ucfirst($url[0]);
-            unset($url[0]);
-        } else {
-            $this->ControllerOrMethodExists = false;
+    private function setController()
+    {
+        $controller_file = $_SERVER['DOCUMENT_ROOT'] . '/app/controllers/' . $this->url[0] . '.php';
+        if (empty($this->url[0])) {
+            $this->controller = 'controllers\\Home';
         }
+        if (file_exists($controller_file)) {
+            $this->controller = 'controllers\\' . ucfirst($this->url[0]);
+            unset($this->url[0]);
+        }
+        return $this;
+    }
 
-        // Get method
-        if (isset($url[1])) {
-            if (method_exists($this->controller, $url[1])) {
-                $this->method = $url[1];
-                unset($url[1]);
-            } else {
-                $this->ControllerOrMethodExists = false;
+    private function setMethod()
+    {
+        if (isset($this->url[1])) {
+            if (method_exists($this->controller, $this->url[1])) {
+                $this->method = $this->url[1];
+                unset($this->url[1]);
             }
         }
+        return $this;
+    }
 
-        // Get parameters
-        $this->params = $url ? array_values($url) : [];
-
-        // check if the page not exists
-        if ( !$this->ControllerOrMethodExists && $url) {
-            $this->controller = 'controllers\\ErrorPage';
-            $this->method = 'index';
-            $this->params = ['404'];
+    private function setParams()
+    {
+        if($this->controller !== 'controllers\\ErrorPage'){
+            $this->params = $this->url[2] ? array_values($this->url) : [];
         }
+        return $this;
+    }
+
+    public function __construct()
+    {
+        // Parse url into readable string
+        $this->url = $this->parseUrl();
+
+        $this->url[0] = ucfirst(strtolower( $this->url[0] ));
+
+        $this->setController()->setMethod()->setParams();
 
         // Create a new instance of the controller
         $this->controller = new $this->controller;
@@ -50,7 +58,8 @@ class App
     }
 
     // Parse url  into useable array
-    private function parseUrl() {
+    private function parseUrl()
+    {
         if (isset($_GET['url']))
             return explode('/', filter_var(rtrim($_GET['url'], '/'), FILTER_SANITIZE_URL));
     }
